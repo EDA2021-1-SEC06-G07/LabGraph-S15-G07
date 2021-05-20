@@ -31,6 +31,8 @@ import threading
 from App import controller
 from DISClib.ADT import stack
 assert config
+import tracemalloc 
+import time 
 
 """
 La vista se encarga de la interacción con el usuario.
@@ -44,7 +46,7 @@ operación seleccionada.
 # ___________________________________________________
 
 
-servicefile = 'bus_routes_14000.csv'
+servicefile = 'bus_routes_10000.csv'
 initialStation = None
 
 # ___________________________________________________
@@ -135,7 +137,18 @@ def thread_cycle():
         elif int(inputs[0]) == 4:
             msg = "Estación Base: BusStopCode-ServiceNo (Ej: 75009-10): "
             initialStation = input(msg)
+            tracemalloc.start()
+            delta_time = -1.0
+
+            start_time= float(time.perf_counter() * 1000)
+
             optionFour(cont, initialStation)
+
+
+            stop_time = float(time.perf_counter() *1000)
+            tracemalloc.stop()
+            delta_time = stop_time - start_time
+            print (delta_time)
 
         elif int(inputs[0]) == 5:
             destStation = input("Estación destino (Ej: 15151-10): ")
